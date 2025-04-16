@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\AttachmentPostingController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\StudentController;
@@ -57,7 +58,6 @@ Route::middleware([
         return view('pages.applications');
     })->name('applications');
 
-    Route::get('/attachment-posting', function () {
-        return view('pages.attachment-posting');
-    })->name('attachment-posting');
+    Route::get('attachment-posting', [AttachmentPostingController::class, 'index'])->name('attachment-posting');
+
 });
