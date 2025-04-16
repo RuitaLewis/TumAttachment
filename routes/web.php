@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminDashboardController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OrganizationController;
+use App\Http\Controllers\StudentsController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -19,6 +20,7 @@ Route::middleware([
     Route::group(['middleware' => ['role:Admin']], function () {
         // Routes for Admin only
         Route::get('/admin', [AdminDashboardController::class, 'index'])->name('admin');
+        Route::get('/students', [StudentsController::class, 'index'])->name('students.index');
 
     });
 
@@ -59,4 +61,8 @@ Route::middleware([
     Route::get('/attachment-posting', function () {
         return view('pages.attachment-posting');
     })->name('attachment-posting');
+
+
+
+
 });

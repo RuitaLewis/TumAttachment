@@ -51,6 +51,11 @@ class Sidebar extends Component
                 'icon' => 'fa-file-alt',
             ],
             [
+                'name' => 'Students',
+                'route' => 'students.index',
+                'icon' => 'fa-users',
+            ],
+            [
                 'name' => 'Notifications',
                 'route' => 'notifications',
                 'icon' => 'fa-envelope',

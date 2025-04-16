@@ -1,14 +1,14 @@
 @extends('admin.layouts.app')
 
 @php
-$totalusers = \App\Models\User::all()->count();
-$users= \App\Models\user::all();
+    $totalusers = \App\Models\User::all()->count();
+    $users = \App\Models\user::all();
 
 @endphp
 @section('content')
-<button class="menu-toggle">
-    <i class="fas fa-bars"></i>
-</button>
+    <button class="menu-toggle">
+        <i class="fas fa-bars"></i>
+    </button>
 
     <div class="stats-grid">
         <div class="stat-card">
