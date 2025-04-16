@@ -1,85 +1,67 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('admin.layouts.app')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-   <link rel="stylesheet" href="assets/css/dashboard.css">
-</head>
-
-<body>
-    <button class="menu-toggle">
-        <i class="fas fa-bars"></i>
-    </button>
 @php
-    $totalusers = \App\Models\User::all()->count();
-    $users= \App\Models\user::all();
+$totalusers = \App\Models\User::all()->count();
+$users= \App\Models\user::all();
 
 @endphp
-    @include('pages.components.aside')
+@section('content')
+<button class="menu-toggle">
+    <i class="fas fa-bars"></i>
+</button>
 
-
-    <div class="main-content">
-        <div class="header">
-            <h1>Dashboard</h1>
-            <input type="search" placeholder="Search..." class="search-bar">
+    <div class="stats-grid">
+        <div class="stat-card">
+            <h3>Students</h3>
+            <div class="stat-value">{{ $totalusers }}</div>
+            <div class="stat-label">Total Registered Students</div>
         </div>
-
-        <div class="stats-grid">
-            <div class="stat-card">
-                <h3>Students</h3>
-                <div class="stat-value">{{$totalusers}}</div>
-                <div class="stat-label">Total Registered Students</div>
-            </div>
-            <div class="stat-card">
-                <h3>Organizations</h3>
-                <div class="stat-value">45</div>
-                <div class="stat-label">Total Registered Organizations</div>
-            </div>
-            <div class="stat-card">
-                <h3>Internship Postings</h3>
-                <div class="stat-value">30</div>
-                <div class="stat-label">Active Postings</div>
-            </div>
-            <div class="stat-card">
-                <h3>Applications</h3>
-                <div class="stat-value">300</div>
-                <div class="stat-label">Total Applications</div>
-            </div>
+        <div class="stat-card">
+            <h3>Organizations</h3>
+            <div class="stat-value">45</div>
+            <div class="stat-label">Total Registered Organizations</div>
         </div>
-
-        <div class="chart-container">
-            <canvas id="studentChart" width="400" height="200"></canvas>
+        <div class="stat-card">
+            <h3>Internship Postings</h3>
+            <div class="stat-value">30</div>
+            <div class="stat-label">Active Postings</div>
         </div>
+        <div class="stat-card">
+            <h3>Applications</h3>
+            <div class="stat-value">300</div>
+            <div class="stat-label">Total Applications</div>
+        </div>
+    </div>
 
-        <div class="profile-container">
-            <h3>Student Profiles</h3>
-            <table class="profile-table">
-                <thead>
+    <div class="chart-container">
+        <canvas id="studentChart" width="400" height="200"></canvas>
+    </div>
+
+    <div class="profile-container">
+        <h3>Student Profiles</h3>
+        <table class="profile-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Internship Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($users as $user)
                     <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Internship Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($users as $user)
-                    <tr>
-                        <td>{{$user->id}}</td>
-                        <td>{{$user->name}}</td>
-                        <td>{{$user->email}}</td>
+                        <td>{{ $user->id }}</td>
+                        <td>{{ $user->name }}</td>
+                        <td>{{ $user->email }}</td>
                         <td><button>Edit</button> <button>Delete</button></td>
-                    </tr> 
-                    @endforeach
-                 
-                   
-                </tbody>
-            </table>
-        </div>
+                    </tr>
+                @endforeach
+
+
+            </tbody>
+        </table>
+    </div>
     </div>
 
     <script>
@@ -122,6 +104,4 @@
             }
         });
     </script>
-</body>
-
-</html>
+@endsection
