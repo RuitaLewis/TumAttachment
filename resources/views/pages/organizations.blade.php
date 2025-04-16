@@ -1,10 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Organization Management Dashboard</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+@extends('admin.layouts.app')
+@section('title', 'Organization Management Dashboard')
+
+@section('head')
     <style>
         * {
             margin: 0;
@@ -33,7 +30,7 @@
             width: 250px;
             background: var(--sidebar-bg);
             padding: 20px;
-            box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05);
             height: 100vh;
             position: fixed;
             left: 0;
@@ -121,7 +118,7 @@
             background: var(--card-bg);
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
         }
 
         .stat-card h3 {
@@ -142,7 +139,7 @@
             padding: 20px;
             border-radius: 10px;
             margin-bottom: 30px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
         }
 
         .form-container h3 {
@@ -181,7 +178,7 @@
             background: white;
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
         }
 
         .profile-container h3 {
@@ -318,99 +315,97 @@
             }
         }
     </style>
-</head>
-<body>
-    @php
-        $organizations = \App\Models\Organization::all();
-        $total_organizations = \App\Models\Organization::all()->count();
-        $total_active_organization = \App\Models\Organization::where('status', 'active')->count();
-    @endphp
+@endsection
+
+
+@php
+    $organizations = \App\Models\Organization::all();
+    $total_organizations = \App\Models\Organization::all()->count();
+    $total_active_organization = \App\Models\Organization::where('status', 'active')->count();
+@endphp
+@section('content')
 
     <button class="menu-toggle">
         <i class="fas fa-bars"></i>
     </button>
 
-    @include('pages.components.aside')
 
-    <div class="main-content">
-        <div class="header">
-            <h1>Dashboard</h1>
-            <input type="search" placeholder="Search..." class="search-bar">
+    <div class="stats-grid">
+        <div class="stat-card">
+            <h3>Active Organization</h3>
+            <div class="stat-value">{{ $total_active_organization }}</div>
+            <div class="stat-label">Total Active Organizations</div>
         </div>
+        <div class="stat-card">
+            <h3>Organizations</h3>
+            <div class="stat-value">{{ $total_organizations }}</div>
+            <div class="stat-label">Total Registered Organizations</div>
+        </div>
+    </div>
 
-        <div class="stats-grid">
-            <div class="stat-card">
-                <h3>Active Organization</h3>
-                <div class="stat-value">{{ $total_active_organization }}</div>
-                <div class="stat-label">Total Active Organizations</div>
+    <div class="form-container">
+        <h3>New Organization Form</h3>
+        <form action="/organizations" method="POST">
+            @csrf
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" required>
             </div>
-            <div class="stat-card">
-                <h3>Organizations</h3>
-                <div class="stat-value">{{ $total_organizations }}</div>
-                <div class="stat-label">Total Registered Organizations</div>
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" required>
             </div>
-        </div>
+            <div class="form-group">
+                <label for="location">Location Link</label>
+                <input type="url" id="location" name="location" placeholder="https://example.com/location" required>
+            </div>
+            <div class="form-group">
+                <button type="submit">Create</button>
+            </div>
+        </form>
+    </div>
 
-        <div class="form-container">
-            <h3>New Organization Form</h3>
-            <form action="/organizations" method="POST">
-                @csrf
-                <div class="form-group">
-                    <label for="name">Name</label>
-                    <input type="text" id="name" name="name" required>
-                </div>
-                <div class="form-group">
-                    <label for="email">Email Address</label>
-                    <input type="email" id="email" name="email" required>
-                </div>
-                <div class="form-group">
-                    <label for="location">Location Link</label>
-                    <input type="url" id="location" name="location" placeholder="https://example.com/location" required>
-                </div>
-                <div class="form-group">
-                    <button type="submit">Create</button>
-                </div>
-            </form>
-        </div>
-
-        <div class="profile-container">
-            <h3>Organization List</h3>
-            <table class="profile-table">
-                <thead>
+    <div class="profile-container">
+        <h3>Organization List</h3>
+        <table class="profile-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($organizations as $organization)
                     <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($organizations as $organization)
-                        <tr>
-                            <td>{{ $organization->id }}</td>
-                            <td>{{ $organization->name }}</td>
-                            <td>{{ $organization->email }}</td>
-                            <td>{{ $organization->status }}</td>
-                            <td>
-                                <button type="button" onclick="openEditModal(
+                        <td>{{ $organization->id }}</td>
+                        <td>{{ $organization->name }}</td>
+                        <td>{{ $organization->email }}</td>
+                        <td>{{ $organization->status }}</td>
+                        <td>
+                            <button type="button"
+                                onclick="openEditModal(
                                     {{ $organization->id }},
                                     '{{ $organization->name }}',
                                     '{{ $organization->email }}',
                                     '{{ $organization->location }}',
                                     '{{ $organization->status }}'
                                 )">Edit</button>
-                                <form action="{{ route('organizations.destroy', $organization->id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this organization?');">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" style="background:none; border:none; color: red; cursor: pointer;">Delete</button>
-                                </form>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
+                            <form action="{{ route('organizations.destroy', $organization->id) }}" method="POST"
+                                style="display: inline;"
+                                onsubmit="return confirm('Are you sure you want to delete this organization?');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit"
+                                    style="background:none; border:none; color: red; cursor: pointer;">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
     </div>
 
     <!-- Edit Modal -->
@@ -462,22 +457,28 @@
         function openEditModal(id, name, email, location, status) {
             // Get the modal
             const modal = document.getElementById('editModal');
-            
+
             // Set form values
             document.getElementById('edit_name').value = name;
             document.getElementById('edit_email').value = email;
             document.getElementById('edit_location').value = location;
             document.getElementById('edit_status').value = status;
-            
+
             // Set the form action
             const form = document.getElementById('editForm');
             form.action = `/organizations/${id}`;
-            
+
             // Show the modal
             modal.style.display = 'block';
-            
+
             // Debug log
-            console.log('Modal opened with:', { id, name, email, location, status });
+            console.log('Modal opened with:', {
+                id,
+                name,
+                email,
+                location,
+                status
+            });
         }
 
         // Close button functionality
@@ -494,5 +495,4 @@
             }
         }
     </script>
-</body>
-</html>
+@endsection

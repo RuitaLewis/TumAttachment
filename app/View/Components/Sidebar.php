@@ -32,7 +32,7 @@ class Sidebar extends Component
             ],
             [
                 'name' => 'Organizations',
-                'route' => 'organizations',
+                'route' => 'organizations.index',
                 'icon' => 'fa-building',
             ],
             [
