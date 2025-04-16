@@ -14,7 +14,7 @@ class OrganizationController extends Controller
     {
         $organizations = Organization::all();
 
-        return view('pages.organizations', compact('organizations'));
+        return view('admin.src.organization.index', compact('organizations'));
     }
 
     /**
@@ -25,7 +25,7 @@ class OrganizationController extends Controller
 
         $organizations = Organization::all();
 
-        return view('pages.organizations', compact('organizations'));
+        return view('admin.src.organization.index', compact('organizations'));
     }
 
     /**
@@ -55,7 +55,7 @@ class OrganizationController extends Controller
      */
     public function show(Organization $organization)
     {
-        return view('pages.organizations', compact('organization'));
+        return view('admin.src.organization.index', compact('organization'));
     }
 
     /**
@@ -63,7 +63,7 @@ class OrganizationController extends Controller
      */
     public function edit(Organization $organization)
     {
-        return view('pages.organizations', compact('organization'));
+        return view('admin.src.organization.index', compact('organization'));
     }
 
     /**
