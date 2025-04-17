@@ -28,7 +28,7 @@
                 <a href="/attachment-application" class="cta-button">Start Application</a>
             </div>
             <div class="hero-image">
-                <img src="/assets/images/Attachment.jpg" alt="Attachment Opportunities">
+                <img src="assets/images/Attachment.jpg" alt="Attachment Opportunities">
             </div>
         </div>
     </section>
