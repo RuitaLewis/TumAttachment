@@ -36,8 +36,8 @@ class Sidebar extends Component
                 'icon' => 'fa-building',
             ],
             [
-                'name' => 'Internship Postings',
-                'route' => 'attachment-posting',
+                'name' => 'Attachment Postings',
+                'route' => 'attachments.index',
                 'icon' => 'fa-briefcase',
             ],
             [
@@ -46,7 +46,7 @@ class Sidebar extends Component
                 'icon' => 'fa-paper-plane',
             ],
             [
-                'name' => 'Apply for Internship',
+                'name' => 'Apply for Attachment',
                 'route' => 'attachment-application',
                 'icon' => 'fa-file-alt',
             ],

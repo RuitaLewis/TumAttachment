@@ -1,11 +1,13 @@
 <?php
 
 use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\AttachmentController;
 use App\Http\Controllers\AttachmentPostingController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\StudentsController;
+use App\Http\Controllers\PositionController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -22,6 +24,14 @@ Route::middleware([
     Route::group(['middleware' => ['role:Admin']], function () {
         Route::get('/admin', [AdminDashboardController::class, 'index'])->name('admin');
         Route::get('/students', [StudentsController::class, 'index'])->name('students.index');
+
+        Route::get('/attachments', [AttachmentController::class, 'index'])->name('attachments.index');
+        Route::post('/attachments', [AttachmentController::class, 'store'])->name('attachments.store');
+        Route::put('/attachments/{attachment}', [AttachmentController::class, 'update'])->name('attachments.update');
+        Route::delete('/attachments/{attachment}', [AttachmentController::class, 'destroy'])->name('attachments.destroy');
+
+
+        Route::post('/positions', [PositionController::class, 'store'])->name('positions.store');
     });
 
     // Routes for Admin & Student
@@ -59,5 +69,4 @@ Route::middleware([
     })->name('applications');
 
     Route::get('attachment-posting', [AttachmentPostingController::class, 'index'])->name('attachment-posting');
-
 });
