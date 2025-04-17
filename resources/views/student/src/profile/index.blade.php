@@ -114,39 +114,7 @@
                 <p>No application history found.</p>
             @endif
         </div>
-
-        <div class="detail-card">
-            <h3>Documents</h3>
-            <div class="documents-list">
-                @if (isset($user->documents) && count($user->documents) > 0)
-                    <table class="profile-table">
-                        <thead>
-                            <tr>
-                                <th>Document Type</th>
-                                <th>Uploaded Date</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($user->documents as $document)
-                                <tr>
-                                    <td>{{ ucfirst($document->type) }}</td>
-                                    <td>{{ date('M d, Y', strtotime($document->created_at)) }}</td>
-                                    <td>
-                                        <a href="{{ route('document.download', $document->id) }}"
-                                            class="btn btn-sm btn-primary">
-                                            <i class="fas fa-download"></i> Download
-                                        </a>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                @else
-                    <p>No documents uploaded yet.</p>
-                @endif
-            </div>
-        </div>
+        @include('student.src.profile.partials.document-upload')
     </div>
 
     <script>

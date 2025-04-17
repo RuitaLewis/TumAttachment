@@ -74,4 +74,8 @@ class User extends Authenticatable
     {
         return $this->hasOne(AcademicInformation::class);
     }
+    public function documents()
+    {
+        return $this->hasMany(StudentDocument::class);
+    }
 }

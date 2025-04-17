@@ -9,6 +9,7 @@ use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\StudentsController;
 use App\Http\Controllers\PositionController;
+use App\Http\Controllers\StudentDocumentController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -40,6 +41,9 @@ Route::middleware([
         Route::get('/student-profile', [StudentController::class, 'index'])->name('student-profile');
         Route::put('/personal-info/{user}', [App\Http\Controllers\UserPersonalInfoController::class, 'update'])->name('personal-info.update');
         Route::post('/academic/update/{id}', [AcademicInformationController::class, 'update'])->name('academic.update');
+
+        Route::post('/documents/upload/{id}', [StudentDocumentController::class, 'store'])->name('document.upload');
+        Route::get('/documents/download/{id}', [StudentDocumentController::class, 'download'])->name('document.download');
     });
 
 
