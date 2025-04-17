@@ -2,7 +2,7 @@
 
 @php
     $totalusers = \App\Models\User::all()->count();
-    $users = \App\Models\user::all();
+    $users = \App\Models\User::role('Student')->get();
 
 @endphp
 @section('content')
@@ -12,7 +12,7 @@
     <div class="">
         @include('admin.partials.pagetitle')
         <div class="profile-container">
-            <h3>Student</h3>
+            <h3>Students</h3>
             <table class="profile-table">
                 <thead>
                     <tr>

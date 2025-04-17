@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AcademicInformationController;
+use App\Http\Controllers\Admin\AttachmentApplicationsController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AttachmentApplicationController;
 use App\Http\Controllers\AttachmentController;
@@ -39,9 +40,9 @@ Route::middleware([
         Route::put('/attachments/{attachment}', [AttachmentController::class, 'update'])->name('attachments.update');
         Route::delete('/attachments/{attachment}', [AttachmentController::class, 'destroy'])->name('attachments.destroy');
 
-
         Route::post('/positions', [PositionController::class, 'store'])->name('positions.store');
     });
+
 
     // Routes for Admin & Student
     Route::group(['middleware' => ['role:Admin|Student']], function () {
@@ -53,9 +54,13 @@ Route::middleware([
         Route::get('/documents/download/{id}', [StudentDocumentController::class, 'download'])->name('document.download');
     });
 
+    Route::group(['middleware' => ['role:Admin|Organization|Institution']], function () {
+        Route::get('/attachment/applications', [AttachmentApplicationsController::class, 'index'])->name('attachment.applications');
 
 
+    });
 
+// 1, 1, 1, 1
 
 
 
@@ -76,13 +81,8 @@ Route::middleware([
     Route::put('organizations/{organization}', [OrganizationController::class, 'update'])->name('organizations.update');
 
 
-    Route::get('/applications', function () {
-        return view('pages.applications');
-    })->name('applications');
 
     Route::get('attachment-posting', [AttachmentPostingController::class, 'index'])->name('attachment-posting');
 
     Route::post('attachment-posting', [AttachmentApplicationController::class, 'store'])->name('student.attachments.apply');
-
-
 });

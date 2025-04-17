@@ -43,7 +43,7 @@ class Sidebar extends Component
 
             [
                 'name' => 'Applications',
-                'route' => 'applications',
+                'route' => 'attachment.applications',
                 'icon' => 'fa-paper-plane',
             ],
             [
