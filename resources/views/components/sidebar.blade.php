@@ -1,15 +1,21 @@
 <div class="sidebar" id="sidebar">
-    <div class="logo">
+    <a href="/" class="logo text-decoration-none">
         Attachment Portal
         <i class="fas fa-times close-menu" style="cursor: pointer; display: none;"></i>
-    </div>
+    </a>
 
     @foreach($navigation as $item)
-        <a href="{{ route($item['route']) }}"
-           class="menu-item {{ Route::currentRouteName() == $item['route'] ? 'active' : '' }}">
-            <i class="fas {{ $item['icon'] }}"></i> {{ $item['name'] }}
-        </a>
-    @endforeach
+    @php
+        $url = ($item['route'] === 'attachment-application')
+            ? route($item['route'], ['id' => auth()->id()])
+            : route($item['route']);
+    @endphp
+    <a href="{{ $url }}"
+       class="menu-item {{ Route::currentRouteName() == $item['route'] ? 'active' : '' }}">
+        <i class="fas {{ $item['icon'] }}"></i> {{ $item['name'] }}
+    </a>
+@endforeach
+
 
     <!-- Logout button -->
     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">

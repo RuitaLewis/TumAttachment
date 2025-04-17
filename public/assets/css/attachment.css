@@ -1,0 +1,97 @@
+        /* Additional styles for attachment listings */
+        .attachment-list {
+            padding: 60px 0;
+            background-color: #f8f9fa;
+        }
+
+        .attachment-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            transition: transform 0.3s ease;
+            overflow: hidden;
+        }
+
+        .attachment-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .attachment-card .card-header {
+            background: #1a3b6c;
+            color: white;
+            padding: 15px 20px;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .attachment-card .card-body {
+            padding: 20px;
+        }
+
+        .attachment-info {
+            display: flex;
+            margin-bottom: 15px;
+        }
+
+        .attachment-info i {
+            color: #1a3b6c;
+            width: 24px;
+            margin-right: 10px;
+        }
+
+        .attachment-description {
+            margin: 15px 0;
+            line-height: 1.6;
+        }
+
+        .attachment-card .btn-apply {
+            background: #1a3b6c;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .attachment-card .btn-apply:hover {
+            background: #0d2348;
+        }
+
+        .filters {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .section-title h2 {
+            color: #1a3b6c;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .section-title p {
+            color: #555;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+
+        .modal-header {
+            background: #1a3b6c;
+            color: white;
+        }
+
+        .btn-close {
+            filter: brightness(0) invert(1);
+        }

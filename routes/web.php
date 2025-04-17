@@ -2,8 +2,10 @@
 
 use App\Http\Controllers\AcademicInformationController;
 use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\AttachmentApplicationController;
 use App\Http\Controllers\AttachmentController;
 use App\Http\Controllers\AttachmentPostingController;
+use App\Http\Controllers\GuestController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\StudentController;
@@ -11,9 +13,9 @@ use App\Http\Controllers\StudentsController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\StudentDocumentController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
+Route::get('/', [GuestController::class, 'welcome'])->name('welcome');
+Route::get('/attachments', [GuestController::class, 'attachments'])->name('attachments');
 
 
 Route::middleware([
@@ -22,12 +24,17 @@ Route::middleware([
     'verified',
 ])->group(function () {
 
+
+
+    Route::get('/attachment-application/{id?}', [AttachmentApplicationController::class, 'index'])->name('attachment-application');
+
+
     // Routes for Admin only
     Route::group(['middleware' => ['role:Admin']], function () {
         Route::get('/admin', [AdminDashboardController::class, 'index'])->name('admin');
         Route::get('/students', [StudentsController::class, 'index'])->name('students.index');
 
-        Route::get('/attachments', [AttachmentController::class, 'index'])->name('attachments.index');
+        Route::get('/admin/attachments', [AttachmentController::class, 'index'])->name('attachments.index');
         Route::post('/attachments', [AttachmentController::class, 'store'])->name('attachments.store');
         Route::put('/attachments/{attachment}', [AttachmentController::class, 'update'])->name('attachments.update');
         Route::delete('/attachments/{attachment}', [AttachmentController::class, 'destroy'])->name('attachments.destroy');
@@ -51,9 +58,7 @@ Route::middleware([
 
 
 
-    Route::get('/attachment-application', function () {
-        return view('student.application-portal');
-    })->name('attachment-application');
+
 
 
 
