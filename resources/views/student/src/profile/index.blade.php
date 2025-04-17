@@ -76,44 +76,7 @@
             </div>
         </div>
 
-        <div class="detail-card">
-            <h3>Application History</h3>
-            @if (isset($user->applications) && count($user->applications) > 0)
-                <table class="profile-table">
-                    <thead>
-                        <tr>
-                            <th>Organization</th>
-                            <th>Position</th>
-                            <th>Applied Date</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($user->applications as $application)
-                            <tr>
-                                <td>{{ $application->posting->organization->name ?? 'N/A' }}</td>
-                                <td>{{ $application->posting->title ?? 'N/A' }}</td>
-                                <td>{{ date('M d, Y', strtotime($application->created_at)) }}</td>
-                                <td>
-                                    <span
-                                        class="badge badge-{{ $application->status === 'accepted'
-                                            ? 'success'
-                                            : ($application->status === 'pending'
-                                                ? 'warning'
-                                                : ($application->status === 'rejected'
-                                                    ? 'danger'
-                                                    : 'secondary')) }}">
-                                        {{ ucfirst($application->status) }}
-                                    </span>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            @else
-                <p>No application history found.</p>
-            @endif
-        </div>
+        @include('student.src.profile.partials.application-history')
         @include('student.src.profile.partials.document-upload')
     </div>
 
