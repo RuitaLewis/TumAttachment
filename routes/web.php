@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AcademicInformationController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AttachmentController;
 use App\Http\Controllers\AttachmentPostingController;
@@ -37,6 +38,8 @@ Route::middleware([
     // Routes for Admin & Student
     Route::group(['middleware' => ['role:Admin|Student']], function () {
         Route::get('/student-profile', [StudentController::class, 'index'])->name('student-profile');
+        Route::put('/personal-info/{user}', [App\Http\Controllers\UserPersonalInfoController::class, 'update'])->name('personal-info.update');
+        Route::post('/academic/update/{id}', [AcademicInformationController::class, 'update'])->name('academic.update');
     });
 
 

@@ -4,12 +4,9 @@
 
 @section('styles')
     <link rel="stylesheet" href="assets/css/student-profile.css">
-
 @endsection
+
 @php
-$id = 1;
-    // Assuming we're getting a specific user by ID
-    // This would typically come from a controller
     $user = \App\Models\User::findOrFail($id ?? request()->route('id'));
 @endphp
 
@@ -30,7 +27,7 @@ $id = 1;
     <div class="profile-container">
         <div class="profile-summary">
             <div class="profile-avatar">
-                @if($user->avatar)
+                @if ($user->avatar)
                     <img src="{{ asset('storage/' . $user->avatar) }}" alt="{{ $user->name }}">
                 @else
                     <div class="avatar-placeholder">
@@ -50,61 +47,28 @@ $id = 1;
         </div>
 
         <div class="profile-details-grid">
-            <div class="detail-card">
-                <h3>Personal Information</h3>
-                <table class="details-table">
-                    <tr>
-                        <th>Student ID:</th>
-                        <td>{{ $user->student_id ?? 'Not set' }}</td>
-                    </tr>
-                    <tr>
-                        <th>Phone Number:</th>
-                        <td>{{ $user->phone ?? 'Not set' }}</td>
-                    </tr>
-                    <tr>
-                        <th>Date of Birth:</th>
-                        <td>{{ $user->date_of_birth ? date('F d, Y', strtotime($user->date_of_birth)) : 'Not set' }}</td>
-                    </tr>
-                    <tr>
-                        <th>Gender:</th>
-                        <td>{{ ucfirst($user->gender ?? 'Not set') }}</td>
-                    </tr>
-                </table>
-            </div>
+            @include('student.src.profile.partials.personal-information')
+            @include('student.src.profile.partials.academic-info')
 
-            <div class="detail-card">
-                <h3>Academic Information</h3>
-                <table class="details-table">
-                    <tr>
-                        <th>Course:</th>
-                        <td>{{ $user->course ?? 'Not set' }}</td>
-                    </tr>
-                    <tr>
-                        <th>Year of Study:</th>
-                        <td>{{ $user->year_of_study ?? 'Not set' }}</td>
-                    </tr>
-                    <tr>
-                        <th>Expected Graduation:</th>
-                        <td>{{ $user->graduation_date ?? 'Not set' }}</td>
-                    </tr>
-                    <tr>
-                        <th>GPA:</th>
-                        <td>{{ $user->gpa ?? 'Not set' }}</td>
-                    </tr>
-                </table>
-            </div>
+
         </div>
 
         <div class="detail-card">
             <h3>Attachment Status</h3>
             <div class="Attachment-status">
-                @if(isset($user->Attachment) && $user->Attachment)
+                @if (isset($user->Attachment) && $user->Attachment)
                     <div class="status-details">
                         <p><strong>Organization:</strong> {{ $user->Attachment->organization->name ?? 'N/A' }}</p>
                         <p><strong>Position:</strong> {{ $user->Attachment->position ?? 'N/A' }}</p>
-                        <p><strong>Start Date:</strong> {{ $user->Attachment->start_date ? date('F d, Y', strtotime($user->Attachment->start_date)) : 'N/A' }}</p>
-                        <p><strong>End Date:</strong> {{ $user->Attachment->end_date ? date('F d, Y', strtotime($user->Attachment->end_date)) : 'N/A' }}</p>
-                        <p><strong>Status:</strong> <span class="badge badge-{{ $user->Attachment->status === 'active' ? 'success' : ($user->Attachment->status === 'pending' ? 'warning' : 'secondary') }}">{{ ucfirst($user->Attachment->status) }}</span></p>
+                        <p><strong>Start Date:</strong>
+                            {{ $user->Attachment->start_date ? date('F d, Y', strtotime($user->Attachment->start_date)) : 'N/A' }}
+                        </p>
+                        <p><strong>End Date:</strong>
+                            {{ $user->Attachment->end_date ? date('F d, Y', strtotime($user->Attachment->end_date)) : 'N/A' }}
+                        </p>
+                        <p><strong>Status:</strong> <span
+                                class="badge badge-{{ $user->Attachment->status === 'active' ? 'success' : ($user->Attachment->status === 'pending' ? 'warning' : 'secondary') }}">{{ ucfirst($user->Attachment->status) }}</span>
+                        </p>
                     </div>
                 @else
                     <p>No active Attachment at the moment.</p>
@@ -114,7 +78,7 @@ $id = 1;
 
         <div class="detail-card">
             <h3>Application History</h3>
-            @if(isset($user->applications) && count($user->applications) > 0)
+            @if (isset($user->applications) && count($user->applications) > 0)
                 <table class="profile-table">
                     <thead>
                         <tr>
@@ -125,17 +89,20 @@ $id = 1;
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($user->applications as $application)
+                        @foreach ($user->applications as $application)
                             <tr>
                                 <td>{{ $application->posting->organization->name ?? 'N/A' }}</td>
                                 <td>{{ $application->posting->title ?? 'N/A' }}</td>
                                 <td>{{ date('M d, Y', strtotime($application->created_at)) }}</td>
                                 <td>
-                                    <span class="badge badge-{{
-                                        $application->status === 'accepted' ? 'success' :
-                                        ($application->status === 'pending' ? 'warning' :
-                                        ($application->status === 'rejected' ? 'danger' : 'secondary'))
-                                    }}">
+                                    <span
+                                        class="badge badge-{{ $application->status === 'accepted'
+                                            ? 'success'
+                                            : ($application->status === 'pending'
+                                                ? 'warning'
+                                                : ($application->status === 'rejected'
+                                                    ? 'danger'
+                                                    : 'secondary')) }}">
                                         {{ ucfirst($application->status) }}
                                     </span>
                                 </td>
@@ -151,7 +118,7 @@ $id = 1;
         <div class="detail-card">
             <h3>Documents</h3>
             <div class="documents-list">
-                @if(isset($user->documents) && count($user->documents) > 0)
+                @if (isset($user->documents) && count($user->documents) > 0)
                     <table class="profile-table">
                         <thead>
                             <tr>
@@ -161,12 +128,13 @@ $id = 1;
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($user->documents as $document)
+                            @foreach ($user->documents as $document)
                                 <tr>
                                     <td>{{ ucfirst($document->type) }}</td>
                                     <td>{{ date('M d, Y', strtotime($document->created_at)) }}</td>
                                     <td>
-                                        <a href="{{ route('document.download', $document->id) }}" class="btn btn-sm btn-primary">
+                                        <a href="{{ route('document.download', $document->id) }}"
+                                            class="btn btn-sm btn-primary">
                                             <i class="fas fa-download"></i> Download
                                         </a>
                                     </td>
