@@ -22,6 +22,7 @@ return new class extends Migration
                 ->onDelete('cascade');
 
             $table->text('description');
+            $table->text('duration')->nullable();
             $table->timestamps();
         });
     }

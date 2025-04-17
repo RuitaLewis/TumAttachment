@@ -1,275 +1,220 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('student.layouts.app')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-        }
+@section('styles')
+    <link rel="stylesheet" href="assets/css/attachment-application.css">
+@endsection
 
-        :root {
-            --primary-color: #1a73e8;
-            --sidebar-bg: #f8f9fa;
-            --card-bg: white;
-            --text-color: #333;
-        }
+@php
+    $attachment = \App\Models\Attachment::where('id', $id)->first();
+    $hasPersonalInfo = Auth::user()->personalInfo()->exists();
+    $hasAcademicInfo = Auth::user()->academinInfo()->exists();
+    $hasRequiredDocuments =
+        Auth::user()
+            ->documents()
+            ->whereIn('type', ['cv', 'transcripts', 'recommendation_letter'])
+            ->count() >= 3;
+    $canSubmit = $hasPersonalInfo && $hasAcademicInfo && $hasRequiredDocuments;
+@endphp
 
-        body {
-            display: flex;
-            min-height: 100vh;
-            background: #f0f2f5;
-            position: relative;
-            overflow-x: hidden;
-        }
+@section('content')
+    <div class="header">
+        <h4>Apply for Attachment</h4>
+        <p>{{ $attachment->position->name }} at {{ $attachment->organization->name }}</p>
+    </div>
 
-        .sidebar {
-            width: 250px;
-            background: var(--sidebar-bg);
-            padding: 20px;
-            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05);
-            height: 100vh;
-            position: fixed;
-            left: 0;
-            top: 0;
-            transition: transform 0.3s ease;
-            z-index: 1000;
-        }
-
-        .sidebar.closed {
-            transform: translateX(-250px);
-        }
-
-        .menu-toggle {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            z-index: 1001;
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 10px;
-            border-radius: 5px;
-            cursor: pointer;
-            display: none;
-        }
-
-        .logo {
-            color: #ff4444;
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .menu-item {
-            padding: 12px 15px;
-            border-radius: 8px;
-            color: var(--text-color);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            margin-bottom: 5px;
-            transition: background-color 0.3s;
-        }
-
-        .menu-item i {
-            margin-right: 10px;
-            width: 20px;
-        }
-
-        .menu-item:hover {
-            background: rgba(26, 115, 232, 0.1);
-        }
-
-        .main-content {
-            flex: 1;
-            padding: 20px;
-            margin-left: 250px;
-            transition: margin-left 0.3s ease;
-            width: calc(100% - 250px);
-        }
-
-        .main-content.expanded {
-            margin-left: 0;
-            width: 100%;
-        }
-
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-
-        .search-bar {
-            padding: 8px;
-            border-radius: 4px;
-            border: 1px solid #ddd;
-            min-width: 200px;
-        }
-
-        .form-container {
-            background: var(--card-bg);
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .form-container h3 {
-            margin-bottom: 20px;
-            color: var(--text-color);
-            font-size: 18px;
-            text-align: center;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            color: var(--text-color);
-            font-weight: bold;
-        }
-
-        .form-group input,
-        .form-group textarea,
-        .form-group select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 14px;
-        }
-
-        .form-group textarea {
-            resize: none;
-            height: 100px;
-        }
-
-        .form-group button {
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-
-        .form-group button:hover {
-            background: #155db8;
-        }
-
-        @media (max-width: 768px) {
-            .sidebar {
-                transform: translateX(-250px);
-            }
-
-            .sidebar.open {
-                transform: translateX(0);
-            }
-
-            .menu-toggle {
-                display: block;
-            }
-
-            .main-content {
-                margin-left: 0;
-                width: 100%;
-                padding: 20px;
-            }
-
-            .header {
-                margin-top: 40px;
-            }
-        }
-    </style>
-</head>
-
-<body>
-    <button class="menu-toggle">
-        <i class="fas fa-bars"></i>
-    </button>
-
-    @include('pages.components.aside')
-
-
-    <div class="main-content">
-        <div class="header">
-            <h1>Apply for Attachment</h1>
+    @if (!$canSubmit)
+        <div class="alert alert-warning">
+            <h5>Required Information Missing</h5>
+            <p>Before submitting your application, please complete the following:</p>
+            <ul>
+                @if (!$hasPersonalInfo)
+                    <li>Complete your <a href="{{ route('student-profile') }}">personal information</a></li>
+                @endif
+                @if (!$hasAcademicInfo)
+                    <li>Add your <a href="{{ route('student-profile') }}">academic information</a></li>
+                @endif
+                @if (!$hasRequiredDocuments)
+                    <li>Upload all required documents <a href="{{ route('student-profile') }}">here</a> (CV, transcripts, and
+                        recommendation letter)</li>
+                @endif
+            </ul>
         </div>
+    @endif
 
-        <div class="form-container">
-            <h3>Attachment Application Form</h3>
-            <form action="/submit-application" method="POST">
-                <div class="form-group">
-                    <label for="name">Full Name</label>
-                    <input type="text" id="name" value="{{ Auth::user()->name }}" name="name"
-                        placeholder="John Doe" required>
-                </div>
-                <div class="form-group">
-                    <label for="email">Email Address</label>
-                    <input type="email" value="{{ Auth::user()->email }}" id="email" name="email" required>
+    <div class="application-instructions">
+        <h5>Instructions:</h5>
+        <ol>
+            <li>All fields marked with * are mandatory</li>
+            <li>Your personal and academic information will be automatically attached to your application</li>
+            <li>Ensure your CV, transcripts, and recommendation letter are uploaded before submission</li>
+            <li>Provide a compelling reason why you're suitable for this position</li>
+        </ol>
+    </div>
+
+    <hr>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Attachment Application Form</h3>
                 </div>
 
-                <div class="form-group">
-                    <label for="position">Preferred Attachment Position</label>
-                    <input type="text" id="position" name="position" placeholder="Data Analyst"
-                        required>
-                </div>
+                <div class="card-body">
+                    <div class="section-header">
+                        <h4>Personal Information</h4>
+                        @if ($hasPersonalInfo)
+                            <span class="status complete">Complete</span>
+                        @else
+                            <span class="status incomplete">Incomplete</span>
+                        @endif
+                    </div>
+                    <div class="info-preview">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p><strong>Name:</strong> {{ Auth::user()->name }}</p>
+                                <p><strong>Email:</strong> {{ Auth::user()->email }}</p>
+                            </div>
+                            <div class="col-md-6">
+                                @if ($hasPersonalInfo)
+                                    <p><strong>Student ID:</strong> {{ Auth::user()->personalInfo->student_id }}</p>
+                                    <p><strong>Phone:</strong> {{ Auth::user()->personalInfo->phone }}</p>
+                                @else
+                                    <p class="text-danger">Please complete your personal information</p>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
 
-                <div class="form-group">
-                    <label for="position">Organization</label>
-                    <select id="position" name="position" required>
-                        <option selected>Select Position</option>
-                        @php
-                            $organizations = \App\Models\Organization::all();
-                        @endphp
-                        @foreach ($organizations as $organization)
-                        <option value="{{$organization->id}}" selected>{{$organization->name}}</option>
-                        @endforeach
-                    </select>
+                    <div class="section-header">
+                        <h4>Academic Information</h4>
+                        @if ($hasAcademicInfo)
+                            <span class="status complete">Complete</span>
+                        @else
+                            <span class="status incomplete">Incomplete</span>
+                        @endif
+                    </div>
+
+                    <div class="info-preview">
+                        @if ($hasAcademicInfo)
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <p><strong>Course:</strong> {{ Auth::user()->academinInfo->course }}</p>
+                                </div>
+                                <div class="col-md-4">
+                                    <p><strong>Year of Study:</strong> {{ Auth::user()->academinInfo->year_of_study }}</p>
+                                </div>
+                                <div class="col-md-4">
+                                    <p><strong>Expected Graduation:</strong>
+                                        {{ Auth::user()->academinInfo->graduation_date }}</p>
+                                </div>
+                            </div>
+                        @else
+                            <p class="text-danger">Please complete your academic information</p>
+                        @endif
+                    </div>
+
+                    <div class="section-header">
+                        <h4>Required Documents</h4>
+                        @if ($hasRequiredDocuments)
+                            <span class="status complete">Complete</span>
+                        @else
+                            <span class="status incomplete">Incomplete</span>
+                        @endif
+                    </div>
+
+                    <div class="info-preview documents-preview">
+                        <div class="row">
+                            @php
+                                $documentTypes = [
+                                    'cv' => 'CV/Resume',
+                                    'transcripts' => 'Academic Transcript',
+                                    'recommendation_letter' => 'Recommendation Letter',
+                                ];
+                                $uploadedDocs = Auth::user()->documents()->pluck('file_path', 'type')->toArray();
+                            @endphp
+
+                            @foreach ($documentTypes as $type => $label)
+                                <div class="col-md-4">
+                                    <div class="document-card {{ isset($uploadedDocs[$type]) ? 'uploaded' : 'missing' }}">
+                                        <div class="doc-icon">
+                                            <i
+                                                class="fas fa-{{ isset($uploadedDocs[$type]) ? 'check-circle' : 'times-circle' }}"></i>
+                                        </div>
+                                        <h5>{{ $label }}</h5>
+                                        @if (isset($uploadedDocs[$type]))
+                                            <p class="text-success">Uploaded</p>
+                                        @else
+                                            <p class="text-danger">Missing</p>
+                                        @endif
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <form action="{{ route('student.attachments.apply', $attachment->id) }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="attachment_id" value="{{ $attachment->id }}">
+
+                        <div class="attachment-details">
+                            <div class="form-group">
+                                <label>Attachment Position</label>
+                                <input type="text" value="{{ $attachment->position->name }}" readonly
+                                    class="form-control-plaintext">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Organization</label>
+                                <input type="text" value="{{ $attachment->organization->name }}" readonly
+                                    class="form-control-plaintext">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Duration</label>
+                                <input type="text" value="{{ $attachment->duration }}" readonly
+                                    class="form-control-plaintext">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Location</label>
+                                <input type="text" value="{{ $attachment->organization->location }}" readonly
+                                    class="form-control-plaintext">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="cover_letter">Why are you a good fit for this position? *</label>
+                            <textarea id="cover_letter" name="cover_letter" rows="6" required class="form-control"
+                                placeholder="Explain why you're interested in this position and how your skills and experiences make you a good candidate..."></textarea>
+                            <small class="form-text text-muted">This will serve as your cover letter (300-500 words
+                                recommended)</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="additional_info">Additional Information (Optional)</label>
+                            <textarea id="additional_info" name="additional_info" rows="4" class="form-control"
+                                placeholder="Any other information you would like the employer to know..."></textarea>
+                        </div>
+
+                        <div class="form-check mb-4">
+                            <input type="checkbox" id="confirm_info" name="confirm_info" class="form-check-input" required>
+                            <label for="confirm_info" class="form-check-label">I confirm that all information provided is
+                                accurate and complete</label>
+                        </div>
+
+                        <div class="form-group text-center">
+                            <button type="submit" class="btn btn-primary btn-lg" {{ $canSubmit ? '' : 'disabled' }}>
+                                Submit Application
+                            </button>
+                            @if (!$canSubmit)
+                                <p class="text-danger mt-2">Please complete all required information before submitting</p>
+                            @endif
+                        </div>
+                    </form>
+
                 </div>
-                <div class="form-group">
-                    <label for="resume">Resume Link</label>
-                    <input type="url" id="resume" name="resume" placeholder="https://example.com/resume"
-                        required>
-                </div>
-                <div class="form-group">
-                    <label for="message">Why should we hire you?</label>
-                    <textarea id="message" name="message" required></textarea>
-                </div>
-                <div class="form-group">
-                    <button type="submit">Submit Application</button>
-                </div>
-            </form>
+            </div>
         </div>
     </div>
 
-    <script>
-        const menuToggle = document.querySelector('.menu-toggle');
-        const sidebar = document.querySelector('.sidebar');
-
-        menuToggle.addEventListener('click', () => {
-            sidebar.classList.toggle('open');
-        });
-    </script>
-</body>
-
-</html>
+@endsection

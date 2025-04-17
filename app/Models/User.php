@@ -78,4 +78,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(StudentDocument::class);
     }
+    public function attachmentApplications()
+    {
+        return $this->hasMany(AttachmentApplication::class);
+    }
 }

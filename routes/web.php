@@ -81,4 +81,8 @@ Route::middleware([
     })->name('applications');
 
     Route::get('attachment-posting', [AttachmentPostingController::class, 'index'])->name('attachment-posting');
+
+    Route::post('attachment-posting', [AttachmentApplicationController::class, 'store'])->name('student.attachments.apply');
+
+
 });

@@ -13,6 +13,13 @@ return new class extends Migration
     {
         Schema::create('attachment_applications', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('attachment_id')->constrained()->onDelete('cascade');
+            $table->string('status')->default('pending'); // pending, accepted, rejected
+            $table->longText('comment')->nullable(); // Comment from admin
+            $table->longText('fit_why')->nullable();
+            $table->longText('additional_info')->nullable();
+            $table->boolean('accurate_info')->default(true);
             $table->timestamps();
         });
     }
