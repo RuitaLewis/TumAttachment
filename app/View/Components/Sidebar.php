@@ -26,20 +26,21 @@ class Sidebar extends Component
                 'icon' => 'fa-home',
             ],
             [
-                'name' => 'Student Profiles',
+                'name' => 'Profile',
                 'route' => 'student-profile',
                 'icon' => 'fa-user',
-            ],
-            [
-                'name' => 'Organizations',
-                'route' => 'organizations.index',
-                'icon' => 'fa-building',
             ],
             [
                 'name' => 'Attachment Postings',
                 'route' => 'attachments.index',
                 'icon' => 'fa-briefcase',
             ],
+            [
+                'name' => 'Organizations',
+                'route' => 'organizations.index',
+                'icon' => 'fa-building',
+            ],
+
             [
                 'name' => 'Applications',
                 'route' => 'applications',
