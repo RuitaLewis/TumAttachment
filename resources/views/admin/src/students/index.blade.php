@@ -19,7 +19,7 @@
                         <th>ID</th>
                         <th>Name</th>
                         <th>Email</th>
-                        <th>Internship Status</th>
+                        <th>Attachment Status</th>
                     </tr>
                 </thead>
                 <tbody>

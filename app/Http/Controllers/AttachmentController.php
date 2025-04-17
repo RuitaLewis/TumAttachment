@@ -20,8 +20,7 @@ class AttachmentController extends Controller
     public function store(Request $request)
     {
         Attachment::create($request->all());
-
-        return redirect()->back()->with('success', 'Application submitted!');
+        return redirect()->back()->with('success', 'Attachment Position saved!');
     }
 
     public function update(Request $request, Attachment $attachment)

@@ -1,6 +1,6 @@
 <div class="sidebar" id="sidebar">
     <div class="logo">
-        Internship Portal
+        Attachment Portal
         <i class="fas fa-times close-menu" style="cursor: pointer; display: none;"></i>
     </div>
 

@@ -77,9 +77,9 @@
                         <tbody>
                             @foreach ($attachments as $attachment)
                                 <tr>
-                                    <td>{{ $attachment->name }}</td>
-                                    <td>{{ $attachment->email }}</td>
-                                    <td>{{ $attachment->position->title ?? 'N/A' }}</td>
+                                    <td>{{ $attachment->organization->name }}</td>
+                                    <td>{{ $attachment->position->name }}</td>
+                                    <td>{{ $attachment->description ?? 'N/A' }}</td>
                                     <td>
                                         <button class="btn btn-primary btn-sm" data-toggle="modal"
                                             data-target="#editModal{{ $attachment->id }}">Edit</button>
@@ -129,7 +129,7 @@
                                                             value="{{ $attachment->resume }}" class="form-control"
                                                             required>
                                                     </div>
-                                                    <div class="form-group"><label>Why should we hire you?</label>
+                                                    <div class="form-group"><label>Description</label>
                                                         <textarea name="message" class="form-control" required>{{ $attachment->message }}</textarea>
                                                     </div>
                                                 </div>

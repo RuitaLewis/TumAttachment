@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tum - Internship/Attachment Applications</title>
+    <title>Tum - Attachment/Attachment Applications</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/assets/css/welcome.css">
 </head>
@@ -23,12 +23,12 @@
     <section class="hero">
         <div class="hero-content">
             <div class="hero-text">
-                <h1>Launch Your Career with Tum Internship</h1>
-                <p>Gain hands-on experience, expand your professional network, and make a meaningful impact with our internship program.</p>
+                <h1>Launch Your Career with Tum Attachment</h1>
+                <p>Gain hands-on experience, expand your professional network, and make a meaningful impact with our Attachment program.</p>
                 <a href="/attachment-application" class="cta-button">Start Application</a>
             </div>
             <div class="hero-image">
-                <img src="/assets/images/Internship.jpg" alt="Internship Opportunities">
+                <img src="/assets/images/Attachment.jpg" alt="Attachment Opportunities">
             </div>
         </div>
     </section>
@@ -36,14 +36,14 @@
     <section class="features" id="features">
         <div class="features-content">
             <div class="section-title">
-                <h2>Why Choose Tum Internship</h2>
-                <p>Everything you need for a successful internship experience</p>
+                <h2>Why Choose Tum Attachment</h2>
+                <p>Everything you need for a successful Attachment experience</p>
             </div>
             <div class="features-grid">
                 <div class="feature-card">
                     <i class="fas fa-briefcase"></i>
                     <h3>Professional Development</h3>
-                    <p>Develop real-world skills, learn from experienced mentors, and enhance your resume with valuable internship experience.</p>
+                    <p>Develop real-world skills, learn from experienced mentors, and enhance your resume with valuable Attachment experience.</p>
                 </div>
                 <div class="feature-card">
                     <i class="fas fa-users"></i>
@@ -58,7 +58,7 @@
                 <div class="feature-card">
                     <i class="fas fa-graduation-cap"></i>
                     <h3>Growth Opportunities</h3>
-                    <p>Explore potential full-time opportunities post-internship and continue growing within the organization.</p>
+                    <p>Explore potential full-time opportunities post-Attachment and continue growing within the organization.</p>
                 </div>
             </div>
         </div>

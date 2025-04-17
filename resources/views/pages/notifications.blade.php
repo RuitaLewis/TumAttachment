@@ -217,7 +217,7 @@
         <div class="form-container">
             <h3>Recent Notifications</h3>
             <div class="notification-item">
-                <p><strong>New Internship Application:</strong> John Doe has applied for the Software Developer
+                <p><strong>New Attachment Application:</strong> John Doe has applied for the Software Developer
                     position.</p>
                 <div class="actions">
                     <button class="mark-read">Mark as Read</button>
@@ -225,7 +225,7 @@
                 </div>
             </div>
             <div class="notification-item">
-                <p><strong>System Update:</strong> Internship portal system was updated successfully.</p>
+                <p><strong>System Update:</strong> Attachment portal system was updated successfully.</p>
                 <div class="actions">
                     <button class="mark-read">Mark as Read</button>
                     <button class="delete">Delete</button>

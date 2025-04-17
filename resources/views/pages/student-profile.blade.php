@@ -96,18 +96,18 @@ $id = 1;
         </div>
 
         <div class="detail-card">
-            <h3>Internship Status</h3>
-            <div class="internship-status">
-                @if(isset($user->internship) && $user->internship)
+            <h3>Attachment Status</h3>
+            <div class="Attachment-status">
+                @if(isset($user->Attachment) && $user->Attachment)
                     <div class="status-details">
-                        <p><strong>Organization:</strong> {{ $user->internship->organization->name ?? 'N/A' }}</p>
-                        <p><strong>Position:</strong> {{ $user->internship->position ?? 'N/A' }}</p>
-                        <p><strong>Start Date:</strong> {{ $user->internship->start_date ? date('F d, Y', strtotime($user->internship->start_date)) : 'N/A' }}</p>
-                        <p><strong>End Date:</strong> {{ $user->internship->end_date ? date('F d, Y', strtotime($user->internship->end_date)) : 'N/A' }}</p>
-                        <p><strong>Status:</strong> <span class="badge badge-{{ $user->internship->status === 'active' ? 'success' : ($user->internship->status === 'pending' ? 'warning' : 'secondary') }}">{{ ucfirst($user->internship->status) }}</span></p>
+                        <p><strong>Organization:</strong> {{ $user->Attachment->organization->name ?? 'N/A' }}</p>
+                        <p><strong>Position:</strong> {{ $user->Attachment->position ?? 'N/A' }}</p>
+                        <p><strong>Start Date:</strong> {{ $user->Attachment->start_date ? date('F d, Y', strtotime($user->Attachment->start_date)) : 'N/A' }}</p>
+                        <p><strong>End Date:</strong> {{ $user->Attachment->end_date ? date('F d, Y', strtotime($user->Attachment->end_date)) : 'N/A' }}</p>
+                        <p><strong>Status:</strong> <span class="badge badge-{{ $user->Attachment->status === 'active' ? 'success' : ($user->Attachment->status === 'pending' ? 'warning' : 'secondary') }}">{{ ucfirst($user->Attachment->status) }}</span></p>
                     </div>
                 @else
-                    <p>No active internship at the moment.</p>
+                    <p>No active Attachment at the moment.</p>
                 @endif
             </div>
         </div>

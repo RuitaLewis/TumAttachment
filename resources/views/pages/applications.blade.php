@@ -238,7 +238,7 @@
                 <div class="stat-label">Total Registered Organizations</div>
             </div>
             <div class="stat-card">
-                <h3>Internship Postings</h3>
+                <h3>Attachment Postings</h3>
                 <div class="stat-value">30</div>
                 <div class="stat-label">Active Postings</div>
             </div>
@@ -261,7 +261,7 @@
                         <th>ID</th>
                         <th>Name</th>
                         <th>Email</th>
-                        <th>Internship Status</th>
+                        <th>Attachment Status</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
