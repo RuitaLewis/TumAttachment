@@ -76,6 +76,44 @@
                 </div>
             </div>
         </div>
+        @if (Auth::user()->hasRole('Organization') && Auth::user()->organization->isNotEmpty())
+            <div class="col-lg-6 mt-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Your Organization's Attachments</h3>
+                    </div>
+                    <div class="card-body">
+                        @php
+                            $userOrganizationIds = Auth::user()->organization->pluck('id')->toArray();
+                            $userAttachments = $attachments->whereIn('organization_id', $userOrganizationIds);
+                        @endphp
+
+                        @if ($userAttachments->isNotEmpty())
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Organization</th>
+                                        <th>Position</th>
+                                        <th>Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($userAttachments as $attachment)
+                                        <tr>
+                                            <td>{{ $attachment->organization->name }}</td>
+                                            <td>{{ $attachment->position->name }}</td>
+                                            <td>{{ $attachment->description ?? 'N/A' }}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        @else
+                            <p>No attachments found for your organizations yet.</p>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        @endif
 
 
         @if (Auth::user()->hasRole('Admin'))
@@ -175,7 +213,8 @@
     </div>
 
     <!-- New Position Modal -->
-    <div class="modal fade" id="newPositionModal" tabindex="-1" role="dialog" aria-labelledby="newPositionModalLabel">
+    <div class="modal fade" id="newPositionModal" tabindex="-1" role="dialog"
+        aria-labelledby="newPositionModalLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <form id="positionForm">
