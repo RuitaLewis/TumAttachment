@@ -40,9 +40,21 @@
                                 @endforeach
                             </select>
                         </div>
-                        @if (Auth::user()->hasRole('Organization') && Auth::user()->organization->isNotEmpty())
-                            <input type="text"  name="organization_id"
-                                value="{{ Auth::user()->organization->first()->id }}">
+                        @if (Auth::user()->hasRole('Organization'))
+                            @if (Auth::user()->organization->isNotEmpty())
+                                <div class="form-group">
+                                    <label for="organization">Select Your Organization</label>
+                                    <select id="organization" name="organization_id" required>
+                                        <option value="">Select Organization</option>
+                                        @foreach (Auth::user()->organization as $organization)
+                                            <option value="{{ $organization->id }}">{{ $organization->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            @else
+                                <p>You don't have any organizations assigned yet. Please <a
+                                        href="{{ url('organizations') }}">create a new organization</a> first.</p>
+                            @endif
                         @else
                             <div class="form-group">
                                 <label for="organization">Organization</label>
@@ -54,6 +66,7 @@
                                 </select>
                             </div>
                         @endif
+
                         <div class="form-group">
                             <label for="description">Description</label>
                             <textarea id="description" name="description" required></textarea>
