@@ -34,7 +34,7 @@
                     @elseif(Auth::user()->hasRole('Institution'))
                         <a href="/admin" class="cta-button">Institution Panel</a>
                     @elseif(Auth::user()->hasRole('Organization'))
-                        <a href="/admin" class="cta-button">Organization Panel</a>
+                        <a href="/admin/attachments" class="cta-button">Organization Panel</a>
                     @endif
                 @endguest
             </div>
