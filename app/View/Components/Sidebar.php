@@ -58,12 +58,6 @@ class Sidebar extends Component
                 'icon' => 'fa-envelope',
                 'roles' => ['Admin', 'Student', 'Organization', 'Institution'],
             ],
-            [
-                'name' => 'Settings',
-                'route' => 'settings',
-                'icon' => 'fa-cog',
-                'roles' => ['Admin'],
-            ],
         ];
 
         $user = Auth::user();
