@@ -27,13 +27,16 @@
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                         @csrf
                     </form>
-
-                    @if(Auth::user()->hasRole('Admin'))
+                    @if (Auth::user()->hasRole('Admin'))
                         <a href="/admin" class="cta-button">Admin Panel</a>
+                    @elseif(Auth::user()->hasRole('Student'))
+                        <a href="/student-profile" class="cta-button">Student Panel</a>
+                    @elseif(Auth::user()->hasRole('Institution'))
+                        <a href="/admin" class="cta-button">Institution Panel</a>
+                    @elseif(Auth::user()->hasRole('Organization'))
+                        <a href="/admin" class="cta-button">Organization Panel</a>
                     @endif
-                    
                 @endguest
-
             </div>
         </div>
     </nav>
