@@ -11,6 +11,6 @@ class Organization extends Model
         'email',
         'location',
         'phone',
-        'address'
+        'address','user_id'
     ];
 }

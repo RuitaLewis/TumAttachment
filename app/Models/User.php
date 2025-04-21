@@ -90,9 +90,12 @@ class User extends Authenticatable
     {
         return $this->hasMany(Attachment::class);
     }
-    public function academicInfo() {
+    public function academicInfo()
+    {
         return $this->hasOne(AcademicInformation::class);
     }
-
-
+    public function organization()
+    {
+        return $this->hasMany(Organization::class);
+    }
 }

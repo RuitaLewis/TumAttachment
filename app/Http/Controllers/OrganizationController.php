@@ -41,7 +41,8 @@ class OrganizationController extends Controller
         ]);
 
         $data = $request->all();
-        $data['status'] = 'active';  // Set default status to 'active'
+        $data['status'] = 'active';
+        $data['user_id'] = auth()->user()->id;
 
         // Create the organization
         Organization::create($data);

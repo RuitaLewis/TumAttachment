@@ -35,15 +35,17 @@ Route::middleware([
         Route::get('/admin', [AdminDashboardController::class, 'index'])->name('admin');
         Route::get('/students', [StudentsController::class, 'index'])->name('students.index');
 
-        Route::post('/attachments', [AttachmentController::class, 'store'])->name('attachments.store');
-        Route::put('/attachments/{attachment}', [AttachmentController::class, 'update'])->name('attachments.update');
-        Route::delete('/attachments/{attachment}', [AttachmentController::class, 'destroy'])->name('attachments.destroy');
 
-        Route::post('/positions', [PositionController::class, 'store'])->name('positions.store');
     });
 
     Route::group(['middleware' => ['role:Admin|Organization']], function () {
         Route::get('/admin/attachments', [AttachmentController::class, 'index'])->name('attachments.index');
+        Route::post('/positions', [PositionController::class, 'store'])->name('positions.store');
+
+        Route::post('/attachments', [AttachmentController::class, 'store'])->name('attachments.store');
+        Route::put('/attachments/{attachment}', [AttachmentController::class, 'update'])->name('attachments.update');
+        Route::delete('/attachments/{attachment}', [AttachmentController::class, 'destroy'])->name('attachments.destroy');
+
     });
 
     // Routes for Admin & Student

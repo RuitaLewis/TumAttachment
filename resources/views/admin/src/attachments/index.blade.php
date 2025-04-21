@@ -15,14 +15,14 @@
             <a href="{{ url('organizations') }}" class="btn btn-secondary">+ New Organization</a>
         </div>
     </div>
-<hr>
+    <hr>
 
     @if (session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
     <div class="row">
-        <!-- Application Form -->
+        <!-- New Attachment posting Form -->
         <div class="col-lg-6">
             <div class="card">
                 <div class="card-header">
@@ -40,15 +40,20 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="form-group">
-                            <label for="organization">Organization</label>
-                            <select id="organization" name="organization_id" required>
-                                <option value="">Select Organization</option>
-                                @foreach ($organizations as $organization)
-                                    <option value="{{ $organization->id }}">{{ $organization->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                        @if (Auth::user()->hasRole('Organization') && Auth::user()->organization->isNotEmpty())
+                            <input type="text"  name="organization_id"
+                                value="{{ Auth::user()->organization->first()->id }}">
+                        @else
+                            <div class="form-group">
+                                <label for="organization">Organization</label>
+                                <select id="organization" name="organization_id" required>
+                                    <option value="">Select Organization</option>
+                                    @foreach ($organizations as $organization)
+                                        <option value="{{ $organization->id }}">{{ $organization->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        @endif
                         <div class="form-group">
                             <label for="description">Description</label>
                             <textarea id="description" name="description" required></textarea>
@@ -59,95 +64,101 @@
             </div>
         </div>
 
-        <div class="col-lg-6">
-            <div class="card">
-                <div class="card-header">
-                    <h3>Attachment List</h3>
-                </div>
-                <div class="card-body">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Organization</th>
-                                <th>Position</th>
-                                <th>Description</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($attachments as $attachment)
-                                <tr>
-                                    <td>{{ $attachment->organization->name }}</td>
-                                    <td>{{ $attachment->position->name }}</td>
-                                    <td>{{ $attachment->description ?? 'N/A' }}</td>
-                                    <td>
-                                        <button class="btn btn-primary btn-sm" data-toggle="modal"
-                                            data-target="#editModal{{ $attachment->id }}">Edit</button>
-                                        <form action="{{ route('attachments.destroy', $attachment->id) }}" method="POST"
-                                            style="display:inline;">
-                                            @csrf @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm"
-                                                onclick="return confirm('Delete this application?')">Delete</button>
-                                        </form>
-                                    </td>
-                                </tr>
 
-                                <!-- Edit Modal -->
-                                <div class="modal fade" id="editModal{{ $attachment->id }}" tabindex="-1" role="dialog">
-                                    <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                            <form action="{{ route('attachments.update', $attachment->id) }}"
-                                                method="POST">
-                                                @csrf @method('PUT')
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title">Edit Application</h5>
-                                                    <button type="button" class="close"
-                                                        data-dismiss="modal">&times;</button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <div class="form-group"><label>Name</label>
-                                                        <input type="text" name="name"
-                                                            value="{{ $attachment->name }}" class="form-control" required>
-                                                    </div>
-                                                    <div class="form-group"><label>Email</label>
-                                                        <input type="email" name="email"
-                                                            value="{{ $attachment->email }}" class="form-control" required>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label>Position</label>
-                                                        <select name="position_id" class="form-control" required>
-                                                            @foreach ($positions as $position)
-                                                                <option value="{{ $position->id }}"
-                                                                    {{ $attachment->position_id == $position->id ? 'selected' : '' }}>
-                                                                    {{ $position->title }}
-                                                                </option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                    <div class="form-group"><label>Resume Link</label>
-                                                        <input type="url" name="resume"
-                                                            value="{{ $attachment->resume }}" class="form-control"
-                                                            required>
-                                                    </div>
-                                                    <div class="form-group"><label>Description</label>
-                                                        <textarea name="message" class="form-control" required>{{ $attachment->message }}</textarea>
-                                                    </div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="submit" class="btn btn-success">Save Changes</button>
-                                                    <button type="button" class="btn btn-secondary"
-                                                        data-dismiss="modal">Close</button>
-                                                </div>
+        @if (Auth::user()->hasRole('Admin'))
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Organization List</h3>
+                    </div>
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Organization</th>
+                                    <th>Position</th>
+                                    <th>Description</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($attachments as $attachment)
+                                    <tr>
+                                        <td>{{ $attachment->organization->name }}</td>
+                                        <td>{{ $attachment->position->name }}</td>
+                                        <td>{{ $attachment->description ?? 'N/A' }}</td>
+                                        <td>
+                                            <button class="btn btn-primary btn-sm" data-toggle="modal"
+                                                data-target="#editModal{{ $attachment->id }}">Edit</button>
+                                            <form action="{{ route('attachments.destroy', $attachment->id) }}"
+                                                method="POST" style="display:inline;">
+                                                @csrf @method('DELETE')
+                                                <button type="submit" class="btn btn-danger btn-sm"
+                                                    onclick="return confirm('Delete this application?')">Delete</button>
                                             </form>
+                                        </td>
+                                    </tr>
+
+                                    <!-- Edit Modal -->
+                                    <div class="modal fade" id="editModal{{ $attachment->id }}" tabindex="-1"
+                                        role="dialog">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <form action="{{ route('attachments.update', $attachment->id) }}"
+                                                    method="POST">
+                                                    @csrf @method('PUT')
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">Edit Application</h5>
+                                                        <button type="button" class="close"
+                                                            data-dismiss="modal">&times;</button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="form-group"><label>Name</label>
+                                                            <input type="text" name="name"
+                                                                value="{{ $attachment->name }}" class="form-control"
+                                                                required>
+                                                        </div>
+                                                        <div class="form-group"><label>Email</label>
+                                                            <input type="email" name="email"
+                                                                value="{{ $attachment->email }}" class="form-control"
+                                                                required>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Position</label>
+                                                            <select name="position_id" class="form-control" required>
+                                                                @foreach ($positions as $position)
+                                                                    <option value="{{ $position->id }}"
+                                                                        {{ $attachment->position_id == $position->id ? 'selected' : '' }}>
+                                                                        {{ $position->title }}
+                                                                    </option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group"><label>Resume Link</label>
+                                                            <input type="url" name="resume"
+                                                                value="{{ $attachment->resume }}" class="form-control"
+                                                                required>
+                                                        </div>
+                                                        <div class="form-group"><label>Description</label>
+                                                            <textarea name="message" class="form-control" required>{{ $attachment->message }}</textarea>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="submit" class="btn btn-success">Save Changes</button>
+                                                        <button type="button" class="btn btn-secondary"
+                                                            data-dismiss="modal">Close</button>
+                                                    </div>
+                                                </form>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            @endforeach
-                        </tbody>
-                    </table>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-        </div>
+        @endif
     </div>
 
     <!-- New Position Modal -->
@@ -225,9 +236,10 @@
                         }
                     },
                     error: function(xhr) {
-                        let error = xhr.responseJSON && xhr.responseJSON.errors && xhr.responseJSON.errors.name
-                            ? xhr.responseJSON.errors.name[0]
-                            : "Something went wrong!";
+                        let error = xhr.responseJSON && xhr.responseJSON.errors && xhr
+                            .responseJSON.errors.name ?
+                            xhr.responseJSON.errors.name[0] :
+                            "Something went wrong!";
 
                         // Show error toast notification
                         Toast.fire({
