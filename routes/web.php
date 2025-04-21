@@ -56,10 +56,12 @@ Route::middleware([
 
     Route::group(['middleware' => ['role:Admin|Organization|Institution']], function () {
         Route::get('/attachment/applications', [AttachmentApplicationsController::class, 'index'])->name('attachment.applications');
+        Route::get('/applications/{id}', [AttachmentApplicationsController::class, 'show'])->name('applications.show');
 
 
     });
 
+    Route::post('/messages', [App\Http\Controllers\MessageController::class, 'store'])->name('messages.store');
 
 
 

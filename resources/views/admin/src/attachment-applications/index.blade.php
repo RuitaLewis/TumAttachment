@@ -50,7 +50,7 @@
             </thead>
             <tbody>
                 @foreach ($applications as $application)
-                    <tr>
+                    <tr onclick="window.location='{{ route('applications.show', $application->id) }}'" style="cursor: pointer;">
                         <td>{{ $application->user->name ?? 'N/A' }}</td>
                         <td>{{ $application->attachment->organization->name ?? 'N/A' }}</td>
                         <td>{{ $application->attachment->position->name ?? 'N/A' }}</td>
@@ -70,6 +70,7 @@
                     </tr>
                 @endforeach
             </tbody>
+
         </table>
     @else
         <p>No application history found.</p>

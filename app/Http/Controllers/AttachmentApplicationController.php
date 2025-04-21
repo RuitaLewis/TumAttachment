@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AttachmentApplication;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -43,4 +44,5 @@ class AttachmentApplicationController extends Controller
 
         return redirect()->back()->with('success', 'Application submitted successfully.');
     }
+   
 }
